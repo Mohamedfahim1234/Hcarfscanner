@@ -14,6 +14,7 @@ import { ExportPanel } from "@/components/ExportPanel";
 import { performGitHubSearch } from "@/utils/gitScanner";
 import { performCorsCheck, CorsVulnerability } from "@/utils/corsScanner";
 import { ExportData, generateSecurityRecommendation } from "@/utils/exportUtils";
+import ChatBot from "@/components/ChatBot";
 
 interface ScanResult {
   platform: "GitHub" | "Google";
@@ -438,38 +439,17 @@ const Index = () => {
 
       // Only proceed with other scans if Git domain was found
       if (gitDomainFound !== false) {
-        // CORS vulnerability check
-        try {
-          console.log('🔍 Starting CORS vulnerability assessment...');
-          const corsVulns = await performCorsCheck(validation.cleanDomain);
-          setCorsVulnerabilities(corsVulns);
-          if (corsVulns.length > 0) {
-            console.log(`✅ CORS scan completed: ${corsVulns.length} vulnerabilities detected`);
-          } else {
-            console.log('✅ CORS scan completed: No misconfigurations found');
-          }
-        } catch (error) {
-          console.error('❌ CORS scan failed:', error);
-        }
-
-        // Google dorking (only if domain was found in Git)
-        console.log('🔍 Executing Google dorking commands...');
+        // Google Dorking
         const googlePromises = googleDorks.map(async (dork) => {
           const searchQuery = `${dork} ${validation.cleanDomain}`;
           try {
-            const results = await performGoogleSearch(searchQuery, validation.cleanDomain);
-            if (results.length > 0) {
-              console.log(`✅ Google dork "${dork}" found ${results.length} verified result(s)`);
-            }
-            return results;
+            return await performGoogleSearch(searchQuery, validation.cleanDomain);
           } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             let reason = "No accessible indexed results found for this search";
-            
             if (errorMessage.includes("quota")) reason = "Google Search API quota exceeded";
             else if (errorMessage.includes("blocked")) reason = "Search blocked by content filtering";
             else if (errorMessage.includes("timeout")) reason = "Google search request timeout";
-            
             scanErrors.push({
               platform: "Google",
               query: searchQuery,
@@ -575,7 +555,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4 md:p-8">
       {/* Enhanced animated background */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.1)_1px,transparent_1px)] bg-[size:50px_50px] animate-pulse opacity-30"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent animate-pulse"></div>
@@ -855,6 +835,16 @@ const Index = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* ChatBot component - always accessible */}
+        <ChatBot scanContext={{
+          domain,
+          results,
+          errors,
+          corsVulnerabilities,
+          failureReasons,
+          scanTime: scanStartTime ? (Date.now() - scanStartTime) : 0
+        }} />
       </div>
     </div>
   );
