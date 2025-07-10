@@ -279,7 +279,7 @@ const Index = () => {
                           <h4 className="text-blue-400 font-medium mb-2">ℹ️ About Git Domain Scanning</h4>
                           <p className="text-gray-300 text-sm">
                             The scanner first checks if your domain exists in public Git repositories before performing detailed vulnerability scans. 
-                            If no references are found, it means your domain likely doesn't have Git-based exposures.
+                            If no references are found, it mean's your domain likely doesn't have Git-based exposures.
                           </p>
                         </div>
                       </CardContent>
