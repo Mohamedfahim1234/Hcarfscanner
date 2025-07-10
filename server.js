@@ -1,12 +1,40 @@
 // Express server for /api/chat endpoint with OpenAI GPT-4o context-aware assistant
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { Configuration, OpenAIApi } = require('openai');
 
+
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+
+// --- Security middleware: block dotfiles and sensitive files ---
+app.use((req, res, next) => {
+  // Block any request for dotfiles, .env, server, backend, etc.
+  const forbiddenPatterns = [
+    /^\/\./, // any dotfile
+    /\.env/i,
+    /owner/i,
+    /server\//i,
+    /backend\//i,
+    /auth\.js$/i,
+    /ownerHashGen/i
+  ];
+  if (forbiddenPatterns.some((pat) => pat.test(req.path))) {
+    return res.status(404).send('Not found');
+  }
+  next();
+});
+
+// AI Chat router (Ollama + fallback)
+const aiChat = require('./src/server/aiChat');
+app.use('/api', aiChat);
+
+const api = require('./server/api');
+app.use('/api/auth', api);
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const openai = new OpenAIApi(new Configuration({ apiKey: OPENAI_API_KEY }));

@@ -1,4 +1,3 @@
-
 import jsPDF from 'jspdf';
 import * as XLSX from 'xlsx';
 
@@ -285,3 +284,21 @@ export const exportToExcel = (data: ExportData) => {
   // Save the Excel file
   XLSX.writeFile(workbook, `leak-hunter-report-${data.domain}-${Date.now()}.xlsx`);
 };
+
+export function exportFindingsAsMarkdown(findings: any[]): string {
+  return findings.map(f => `
+## 🔗 ${f.url}
+- **Type**: ${f.type}
+- **Match**: \`${f.match}\`
+- **Severity**: ${f.severity === 'High' ? '🔴 High' : f.severity}
+- **Line**: ${f.line}
+- **Confidence**: ${f.confidence}%
+- **Why It's Dangerous**: ${f.explanation}
+${f.fix ? `- **How to Fix**: ${f.fix}` : ''}
+- **Snippet**: \`${f.snippet}\`
+`).join('\n');
+}
+
+export function exportFindingsAsJSON(findings: any[]): string {
+  return JSON.stringify(findings, null, 2);
+}
