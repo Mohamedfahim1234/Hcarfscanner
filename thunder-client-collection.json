@@ -1,0 +1,129 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "HCARF Scanner API Tests",
+  "folders": [
+    {
+      "name": "Auth",
+      "requests": [
+        {
+          "name": "Register User",
+          "method": "POST",
+          "url": "http://localhost:3000/api/register",
+          "bodyType": "json",
+          "body": {
+            "email": "testuser@example.com",
+            "username": "testuser",
+            "password": "TestPass123!",
+            "role": "user"
+          },
+          "tests": [
+            { "type": "status", "value": 200 }
+          ]
+        },
+        {
+          "name": "Login User",
+          "method": "POST",
+          "url": "http://localhost:3000/api/login",
+          "bodyType": "json",
+          "body": {
+            "identifier": "testuser@example.com",
+            "password": "TestPass123!"
+          },
+          "tests": [
+            { "type": "status", "value": 200 }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Scan",
+      "requests": [
+        {
+          "name": "Initiate Scan",
+          "method": "POST",
+          "url": "http://localhost:3000/api/scan",
+          "bodyType": "json",
+          "body": {
+            "domain": "example.com"
+          },
+          "tests": [
+            { "type": "status", "value": 200 }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "requests": [
+        {
+          "name": "Change Password (Owner)",
+          "method": "POST",
+          "url": "http://localhost:3000/api/changePassword",
+          "bodyType": "json",
+          "body": {
+            "userId": "OWNER_USER_ID",
+            "newPassword": "NewOwnerPass123!"
+          },
+          "tests": [
+            { "type": "status", "value": 200 }
+          ]
+        },
+        {
+          "name": "Get Audit Logs (Admin Only)",
+          "method": "GET",
+          "url": "http://localhost:3000/api/auditLogs",
+          "tests": [
+            { "type": "status", "value": 200 }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "AI",
+      "requests": [
+        {
+          "name": "AI Scan Explanation",
+          "method": "POST",
+          "url": "http://localhost:3000/api/aiExplain",
+          "bodyType": "json",
+          "body": {
+            "scanResults": { "domain": "example.com", "findings": [] }
+          },
+          "tests": [
+            { "type": "status", "value": 200 }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Security",
+      "requests": [
+        {
+          "name": "Rate Limiting Test",
+          "method": "POST",
+          "url": "http://localhost:3000/api/scan",
+          "bodyType": "json",
+          "body": {
+            "domain": "example.com"
+          },
+          "tests": [
+            { "type": "status", "value": 429 }
+          ]
+        },
+        {
+          "name": "Error Handling Test",
+          "method": "POST",
+          "url": "http://localhost:3000/api/login",
+          "bodyType": "json",
+          "body": {
+            "identifier": "wronguser@example.com",
+            "password": "WrongPass!"
+          },
+          "tests": [
+            { "type": "status", "value": 401 }
+          ]
+        }
+      ]
+    }
+  ]
+}
