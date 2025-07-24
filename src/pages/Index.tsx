@@ -64,7 +64,7 @@ const Index = () => {
         <span className="font-mono text-lg bg-slate-700 px-3 py-2 rounded text-cyan-300 tracking-widest select-none">{captchaValue}</span>
         <Input
           type="text"
-          placeholder="Enter CAPTCHA"
+          placeholder="Enter CAPTCHA."
           value={captcha}
           onChange={e => setCaptcha(e.target.value.toUpperCase())}
           className="w-40 bg-slate-700 border-slate-600 text-white placeholder-gray-400"
