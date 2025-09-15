@@ -1,0 +1,106 @@
+/* Glassmorphism, neon/cyber glow, and custom scrollbar for ChatBot */
+.glassmorph {
+  background: rgba(34, 8, 56, 0.65);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-radius: 1.5rem;
+  border: 1.5px solid rgba(186, 104, 200, 0.25);
+}
+.glassmorph-header {
+  backdrop-filter: blur(8px) saturate(180%);
+  -webkit-backdrop-filter: blur(8px) saturate(180%);
+}
+.glassmorph-body {
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+}
+.glassmorph-footer {
+  backdrop-filter: blur(6px) saturate(180%);
+  -webkit-backdrop-filter: blur(6px) saturate(180%);
+}
+.glassmorph-bubble {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.glassmorph-faq {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.cyber-glow {
+  box-shadow: 0 0 12px 2px #d946ef, 0 0 32px 4px #7c3aed44;
+}
+.neon-glow {
+  box-shadow: 0 0 8px 2px #a21caf99, 0 0 16px 2px #f472b6aa;
+}
+.drop-shadow-glow {
+  filter: drop-shadow(0 0 6px #d946ef) drop-shadow(0 0 2px #a21caf);
+}
+.user-bubble {
+  border: 1.5px solid #f472b6;
+}
+.bot-bubble {
+  border: 1.5px solid #a21caf;
+}
+.chat-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.chat-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #a21caf 0%, #f472b6 100%);
+  border-radius: 8px;
+}
+.chat-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #a21caf #fff0;
+}
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-in 0.5s cubic-bezier(.4,0,.2,1);
+}
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
